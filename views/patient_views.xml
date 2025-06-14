@@ -30,7 +30,16 @@
                             invisible="state == 'serious'"/>
                     
                     <field name="state" widget="statusbar"/>
-                </header>
+
+
+                    <button name="%(action_report_patient)d"
+                    string="Patient Report"
+                    type="action"
+                    class="btn-primary"
+                    target="new"
+                    />
+
+                        </header>
 
                 <sheet>
                     <group>
@@ -47,7 +56,6 @@
                         <field name="address"/>
                         <field name="department_id" domain="[('is_opened', '=', True)]"/>
                         <field name="department_capacity" readonly="1"/>
-                        <!-- <field name="doctors_ids" widget="many2many_tags" readonly="not department_id"/> -->
                         <field name="doctors_ids" groups="hms.group_hms_manager" widget="many2many_tags"/>
 
                         <field name="log_ids">

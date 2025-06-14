@@ -1,42 +1,61 @@
 <odoo>
-    <template id="report_patient_status">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <div class="page">
-                    <h2>Patient Status Report</h2>
-                    <p><strong>Name:</strong> <t t-esc="doc.first_name + ' ' + doc.last_name"/></p>
-                    <p><strong>Age:</strong> <t t-esc="doc.age"/></p>
-                    <p><strong>Department:</strong> <t t-esc="doc.department_id.name"/></p>
-                    <p><strong>Doctors:</strong>
-                        <t t-foreach="doc.doctors_ids" t-as="doctor">
-                            <t t-esc="doctor.first_name"/> <t t-if="not loop.last">, </t>
-                        </t>
-                    </p>
-                    <p><strong>Birth Date:</strong> <t t-esc="doc.birth_date"/></p>
-                    <p><strong>PCR:</strong> <t t-esc="doc.pcr"/></p>
-                    <p><strong>Blood Type:</strong> <t t-esc="doc.blood_type"/></p>
-                    <p><strong>Email:</strong> <t t-esc="doc.email"/></p>
-                    <h3>User Date Info - Log History</h3>
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Created By</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="doc.log_ids" t-as="log">
-                                <tr>
-                                    <td><t t-esc="log.description"/></td>
-                                    <td><t t-esc="log.created_by.name"/></td>
-                                    <td><t t-esc="log.date"/></td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                </div>
-            </t>
+  <template id="report_patient_status">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+        <t t-foreach="docs" t-as="doc">
+
+          <div class="page">
+            <h2 style="color:#d63031;">Patient Status Report</h2>
+
+            <div style="display:flex; justify-content:space-between;">
+              <div>
+                <p><strong>Name:</strong>
+                  <t t-esc="doc.first_name"/> <t t-esc="doc.last_name"/>
+                </p>
+                <p><strong>Age:</strong> <t t-esc="doc.age"/></p>
+                <p><strong>Department:</strong>
+                  <t t-esc="doc.department_id.name"/>
+                </p>
+                <p><strong>Doctors:</strong>
+                   <t t-esc="', '.join(doc.doctors_ids.mapped('first_name'))"/>
+                </p>
+
+              </div>
+
+              <div>
+                <t t-if="doc.image">
+                  <img t-att-src="'data:image/png;base64,%s' % doc.image"
+                       width="120" height="120" style="border-radius:5px;"/>
+                </t>
+                <p><strong>Birth date:</strong> <t t-esc="doc.birth_date"/></p>
+                <p><strong>PCR:</strong> <t t-esc="doc.pcr"/></p>
+                <p><strong>Blood Type:</strong> <t t-esc="doc.blood_type"/></p>
+                <p><strong>Email:</strong> <t t-esc="doc.email"/></p>
+              </div>
+            </div>
+
+            <h3 style="color:red; margin-top:30px;">Log History</h3>
+            <table class="table table-bordered" style="width:100%;">
+              <thead style="background-color:#2980b9; color:white;">
+                <tr>
+                  <th>User</th><th>Date</th><th>Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <t t-foreach="doc.log_ids" t-as="log">
+                  <tr>
+                    <td><t t-esc="log.created_by.first_name"/></td>
+                    <td><t t-esc="log.date"/></td>
+                    <td><t t-esc="log.description"/></td>
+                  </tr>
+                </t>
+              </tbody>
+            </table>
+          </div>
+
         </t>
-    </template>
+
+      </t>
+    </t>
+  </template>
 </odoo>
