@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+
+            <record id="action_res_partner_customer" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('customer_rank', '&gt;', 0)]</field>
+        </record>
+
+        <menuitem id="menu_customers_parent" name="Customers"
+                  parent="crm.crm_menu_root"
+                  action="action_res_partner_customer"
+                  sequence="10" />
+
+        <record id="view_partner_tree_hms" model="ir.ui.view">
+            <field name="name">res.partner.tree.hms</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="inside">
+                    <field name="website"/>
+                    <field name="related_patient_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_form_hms" model="ir.ui.view">
+            <field name="name">res.partner.form.hms</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='vat']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='sales_purchases']//group[@name='misc']"
+                       position="inside">
+                    <field name="related_patient_id" options="{'no_create': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
